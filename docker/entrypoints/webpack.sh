@@ -4,7 +4,20 @@ set -e
 rm -rf /app/tmp/pids/server.pid
 rm -rf /app/tmp/cache/*
 
-yarn install --check-files
+apk update && apk add --no-cache \
+  openssl \
+  tar \
+  build-base \
+  tzdata \
+  postgresql-dev \
+  postgresql-client \
+  nodejs-current \
+  yarn \
+  git \
+
+export NODE_OPTIONS=--openssl-legacy-provider
+
+yarn install
 
 echo "Waiting for yarn and bundle integrity to match lockfiles...."
 YARN="yarn check --integrity"
